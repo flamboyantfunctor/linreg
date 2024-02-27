@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.interpolate import make_interp_spline, BSpline
+from scipy.interpolate import make_interp_spline
 
 from matplotlib.widgets import Slider, Button
 
@@ -56,9 +56,13 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 8))
 fig.subplots_adjust(left=0.25, bottom=0.25)
 (line,) = ax1.plot(x_train, tmp_f_wb)
 (para,) = ax2.plot(w_new, w_smoothed)
+(point,) = ax2.plot(
+    w_init,
+    compute_cost(x_train, y_train, w_init, b_init),
+    marker="o",
+)
 
 ax1.scatter(x_train, y_train, marker="x", c="r", label="actual values")
-
 
 ax_color = "hotpink"
 ax1.set_xlabel("Size [1000 sqft]")
@@ -76,6 +80,8 @@ b_slider = Slider(
 
 def update(val):
     line.set_ydata(compute_model(x_train, w_slider.val, b_slider.val))
+    point.set_xdata(w_slider.val)
+    point.set_ydata(compute_cost(x_train, y_train, w_slider.val, b_init))
     fig.canvas.draw_idle()
 
 
