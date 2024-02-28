@@ -4,7 +4,10 @@ from scipy.interpolate import make_interp_spline
 
 from matplotlib.widgets import Slider, Button
 
+# Training data Inputs [size]
 x_train = np.array([1.0, 1.7, 2.0, 2.5, 3.0, 3.2])
+
+# Training data Labels [price]
 y_train = np.array(
     [
         250,
@@ -16,9 +19,11 @@ y_train = np.array(
     ]
 )
 
+# Initial parameter w, b
 w_init = 100
 b_init = 50
 
+# Range for w values
 w_range = np.arange(start=0, stop=450, step=50)
 
 
@@ -32,7 +37,7 @@ def compute_model(x, w, b):
 
 
 def compute_cost(x: list, y: list, w: list, b: int) -> list:
-    """Computes the cost"""
+    """Computes the cost for given parameters"""
     m = x.shape[0]
 
     cost_sum = 0
@@ -78,6 +83,7 @@ b_slider = Slider(
 )
 
 
+# Define an update function
 def update(val):
     line.set_ydata(compute_model(x_train, w_slider.val, b_slider.val))
     point.set_xdata(w_slider.val)
@@ -85,18 +91,23 @@ def update(val):
     fig.canvas.draw_idle()
 
 
+# Connect the update function to sliders change events
 w_slider.on_changed(update)
 b_slider.on_changed(update)
 
+# Create and place a reset button
 resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
 button = Button(resetax, "Reset", hovercolor="hotpink")
 
 
+# Define a reset event
 def reset(event):
     w_slider.reset()
     b_slider.reset()
 
 
+# Listen to click events on the button
 button.on_clicked(reset)
 
+# Show the figure
 plt.show()
