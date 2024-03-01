@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 
 # Define the x inputs
-x = np.arange(-10, 10, 0.1)
+x = np.arange(-1, 1, 0.01)
 
 # Define parameters
 W_MIN = 0.0
-W_MAX = 20.0
+W_MAX = 50.0
 W_INIT = 10.0
 
-B_MIN = -10.0
-B_MAX = 10.0
+B_MIN = -20.0
+B_MAX = 20.0
 B_INIT = 0.0
 
 COLOR = "forestgreen"
