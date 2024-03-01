@@ -2,8 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 
-# Define the inputs and starting parameters
+# Define the x inputs
 x = np.arange(-10, 10, 0.1)
+
+# Define parameters
 W_MIN = 0.0
 W_MAX = 20.0
 W_INIT = 10.0
@@ -14,7 +16,7 @@ B_INIT = 0.0
 
 
 # Define the logistic function
-def logistic_function(x: np.ndarray, w: float, b: float):
+def logistic_function(x: np.ndarray, w: float, b: float) -> np.ndarray:
 
     m = x.shape[0]
     y = np.empty(x.shape)
@@ -30,11 +32,12 @@ def logistic_function(x: np.ndarray, w: float, b: float):
 # Compute the y values
 y = logistic_function(x, W_INIT, B_INIT)
 
+# Create the plot, adjust it's position and plot the graph
 fig, ax = plt.subplots()
 fig.subplots_adjust(left=0.25, bottom=0.25)
 (line,) = ax.plot(x, y)
 
-
+# Create two sliders for the w and b parameter
 ax_w = fig.add_axes([0.25, 0.1, 0.65, 0.03])
 w_slider = Slider(ax=ax_w, label="w", valmin=W_MIN, valmax=W_MAX, valinit=W_INIT)
 
@@ -48,25 +51,31 @@ b_slider = Slider(
     orientation="vertical",
 )
 
-
-def update(val):
-    line.set_ydata(logistic_function(x, w_slider.val, b_slider.val))
-    fig.canvas.draw_idle()
-
-
-def reset(event):
-    w_slider.reset()
-    b_slider.reset()
-
-
-# Connect the update function to sliders change events
-w_slider.on_changed(update)
-b_slider.on_changed(update)
-
 # Create and place a reset button
 resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
 button = Button(resetax, "Reset", hovercolor="hotpink")
 
+
+# Define an update function for the sliders on-changed event
+def update(val):
+    """Updates the y values according to the w and b slider values"""
+    line.set_ydata(logistic_function(x, w_slider.val, b_slider.val))
+    fig.canvas.draw_idle()
+
+
+# Define a reset function for the buttons on-clicked event
+def reset(event):
+    """Resets the slider values to the initial values of w and b"""
+    w_slider.reset()
+    b_slider.reset()
+
+
+# Connect the update function to sliders on-changed events
+w_slider.on_changed(update)
+b_slider.on_changed(update)
+
+# Connect the onclick event of the reset button to reset function
 button.on_clicked(reset)
 
+# Show the plot
 plt.show()
