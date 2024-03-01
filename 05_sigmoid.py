@@ -18,21 +18,14 @@ COLOR = "forestgreen"
 
 
 # Define the logistic function
-def logistic_function(x: np.ndarray, w: float, b: float) -> np.ndarray:
-
-    m = x.shape[0]
-    y = np.empty(x.shape)
-
-    for i in range(m):
-        f_wb = w * x[i] + b
-        e_term = pow(np.e, -f_wb)
-        y[i] = 1 / (1 + e_term)
-
+def sigmoid(x: np.ndarray, w: float, b: float) -> np.ndarray:
+    z = w * x + b
+    y = 1 / (1 + np.exp(-z))
     return y
 
 
 # Compute the y values
-y = logistic_function(x, W_INIT, B_INIT)
+y = sigmoid(x, W_INIT, B_INIT)
 
 # Create the plot, adjust it's position and plot the graph
 fig, ax = plt.subplots()
@@ -64,7 +57,7 @@ button = Button(resetax, "Reset", hovercolor=COLOR)
 # Define an update function for the sliders on-changed event
 def update(val):
     """Updates the y values according to the w and b slider values"""
-    line.set_ydata(logistic_function(x, w_slider.val, b_slider.val))
+    line.set_ydata(sigmoid(x, w_slider.val, b_slider.val))
     fig.canvas.draw_idle()
 
 
