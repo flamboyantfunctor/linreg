@@ -14,6 +14,8 @@ B_MIN = -10.0
 B_MAX = 10.0
 B_INIT = 0.0
 
+COLOR = "forestgreen"
+
 
 # Define the logistic function
 def logistic_function(x: np.ndarray, w: float, b: float) -> np.ndarray:
@@ -35,16 +37,19 @@ y = logistic_function(x, W_INIT, B_INIT)
 # Create the plot, adjust it's position and plot the graph
 fig, ax = plt.subplots()
 fig.subplots_adjust(left=0.25, bottom=0.25)
-(line,) = ax.plot(x, y)
+(line,) = ax.plot(x, y, c=COLOR)
 
 # Create two sliders for the w and b parameter
 ax_w = fig.add_axes([0.25, 0.1, 0.65, 0.03])
-w_slider = Slider(ax=ax_w, label="w", valmin=W_MIN, valmax=W_MAX, valinit=W_INIT)
+w_slider = Slider(
+    ax=ax_w, label="w", color=COLOR, valmin=W_MIN, valmax=W_MAX, valinit=W_INIT
+)
 
 ax_b = fig.add_axes([0.1, 0.25, 0.0225, 0.63])
 b_slider = Slider(
     ax=ax_b,
     label="b",
+    color=COLOR,
     valmin=B_MIN,
     valmax=B_MAX,
     valinit=B_INIT,
@@ -53,7 +58,7 @@ b_slider = Slider(
 
 # Create and place a reset button
 resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
-button = Button(resetax, "Reset", hovercolor="hotpink")
+button = Button(resetax, "Reset", hovercolor=COLOR)
 
 
 # Define an update function for the sliders on-changed event
