@@ -13,14 +13,30 @@ zeros = [X[i] for i in range(len(X)) if y[i] == 0]
 
 fig, ax = plt.subplots(1, 1, figsize=(6, 6))
 
-"""Decision Boundary"""
-# We trained the model and got these values: w_0 = 1, w_0 = 1, b = -3
+"""Decision Boundary
 
+z = w_0 * x_0 + w_1 * x_1 + b
 
-# This is *-moves are f-ing elegant 😳 i don't get it yet...
+We trained the model and got these values: w_0 = 1, w_0 = 1, b = -3
+
+z = x_0 + x_1 - 3
+x_0 + x_1 = 3
+x_0 = 3 - x_1
+
+"""
+x_1 = np.arange(5)
+x_0 = 3 - x_1
+
+# This *-moves are f-ing elegant 😳 i don't get it yet...
+"""
+*ones                   -> unpacks *ones, so [3, 0.5], [2, 2], [1, 2.5]
+zip(*ones)              -> zip([3, 0.5], [2, 2], [1, 2.5]) => [3, 2, 1], [0.5, 2, 2.5]
+(*zip(*ones))           -> *zip unpacks the two iters that *ones returns
+"""
+
 ax.scatter(*zip(*ones), marker="x", c="r", label="y=1")
 ax.scatter(*zip(*zeros), marker="o", c="b", label="y=0")
-
+ax.plot(x_0, x_1)
 ax.axis([0.0, 4.0, 0.0, 4.0])
 ax.set_xlabel("$x_0$")
 ax.set_ylabel("$x_1$")
