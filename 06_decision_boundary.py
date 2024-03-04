@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 X = np.array([[0.5, 1.5], [1, 1], [1.5, 0.5], [3, 0.5], [2, 2], [1, 2.5]])
 
 # Corresponding labels for classification
-
 y = np.array([0, 0, 0, 1, 1, 1]).reshape(-1, 1)
 # ...reshape(-1, 1) -> [[0],[0],[0],[1],[1],[1] ]
 
@@ -27,8 +26,8 @@ x_0 + x_1 = 3
 x_0 = 3 - x_1
 
 """
-x_1 = np.arange(5)
-x_0 = 3 - x_1
+x_1 = np.arange(10)
+x_0 = -x_1 + 3
 
 # This *-moves are f-ing elegant 😳 i don't get it yet...
 """
@@ -48,7 +47,7 @@ ax.fill_between(x_0, x_1, alpha=0.1)
 ax.axis([0.0, 4.0, 0.0, 4.0])
 ax.set_xlabel("$x_0$")
 ax.set_ylabel("$x_1$")
-plt.subplots_adjust(left=0.10, bottom=0.10)
+plt.subplots_adjust(left=0.15, bottom=0.15)
 plt.legend()
 
 # Show plot

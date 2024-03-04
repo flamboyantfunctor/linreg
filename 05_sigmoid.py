@@ -6,7 +6,7 @@ from matplotlib.widgets import Slider, Button
 x = np.arange(-1, 1, 0.01)
 
 # Define parameters
-W_MIN = 0.0
+W_MIN = -50.0
 W_MAX = 50.0
 W_INIT = 10.0
 
