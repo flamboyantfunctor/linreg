@@ -30,7 +30,10 @@ y = sigmoid(x, W_INIT, B_INIT)
 # Create the plot, adjust it's position and plot the graph
 fig, ax = plt.subplots()
 fig.subplots_adjust(left=0.25, bottom=0.25)
-(line,) = ax.plot(x, y, c=COLOR)
+
+# .plot() returns a list of created 2D Objects (Lines,, Points, etc)
+# so get the first element with [0]
+line = ax.plot(x, y, c=COLOR)[0]
 
 # Create two sliders for the w and b parameter
 ax_w = fig.add_axes([0.25, 0.1, 0.65, 0.03])

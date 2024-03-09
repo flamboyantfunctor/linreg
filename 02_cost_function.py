@@ -60,17 +60,20 @@ w_smoothed = spline(w_range)
 # Plotting the results
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 8))
 fig.subplots_adjust(left=0.25, bottom=0.25)
-(line,) = ax1.plot(x_train, f)
-(para,) = ax2.plot(w_range, w_smoothed)
-(point,) = ax2.plot(
+line = ax1.plot(x_train, f)[0]
+para = ax2.plot(w_range, w_smoothed)[0]
+point = ax2.plot(
     w_init,
     compute_cost(x_train, y_train, w_init, b_init),
     marker="o",
-)
+)[0]
 
 ax1.scatter(x_train, y_train, marker="x", c="r", label="actual values")
 ax1.set_xlabel("Size [1000 sqft]")
 ax1.set_ylabel("Price [1000 $]")
+
+ax2.set_xlabel("weight")
+ax2.set_ylabel("Cost")
 
 
 ax_w = fig.add_axes([0.25, 0.1, 0.65, 0.03])
@@ -91,9 +94,10 @@ b_slider = Slider(
 
 # Define an update function
 def update(val):
-    line.set_ydata(compute_model(x_train, w_slider.val, b_slider.val))
-    point.set_xdata(w_slider.val)
-    point.set_ydata(compute_cost(x_train, y_train, w_slider.val, b_init))
+    line.set_data(x_train, compute_model(x_train, w_slider.val, b_slider.val))
+    point.set_data(
+        [w_slider.val], [compute_cost(x_train, y_train, w_slider.val, b_init)]
+    )
     fig.canvas.draw_idle()
 
 
