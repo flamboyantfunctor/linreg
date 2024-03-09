@@ -5,7 +5,7 @@ from matplotlib.widgets import Slider, Button
 # Define the x inputs
 x = np.arange(-1, 1, 0.01)
 
-# Define parameters
+# Define initial parameters w, b
 W_MIN = -50.0
 W_MAX = 50.0
 W_INIT = 10.0
@@ -17,9 +17,9 @@ B_INIT = 0.0
 COLOR = "forestgreen"
 
 
-# Define the logistic function
+# Define the sigmoid function for logistic regression
 def sigmoid(x: np.ndarray, w: float, b: float) -> np.ndarray:
-    z = w * x + b
+    z = np.dot(x, w) + b
     y = 1 / (1 + np.exp(-z))
     return y
 

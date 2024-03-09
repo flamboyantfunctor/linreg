@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 x_train = np.array([1.0, 2.0])
 y_train = np.array([300.0, 500.0])
 
-
 # Initial weight and bias parameters
 w = 200
 b = 100
@@ -14,15 +13,11 @@ b = 100
 def compute_model(x, w, b):
     """Computes the prediction of a linear model"""
 
-    m = x.shape[0]
-
-    f_wb = np.zeros(m)
-    for i in range(m):
-        f_wb[i] = w * x[i] + b
-    return f_wb
+    f = np.dot(x, w) + b
+    return f
 
 
-f_wb = compute_model(
+f = compute_model(
     x_train,
     w,
     b,
@@ -32,7 +27,7 @@ f_wb = compute_model(
 x_1 = np.array([1.2, 1.3, 1.9])
 p_1 = compute_model(x_1, w, b)
 # Plot the linear model
-plt.plot(x_train, f_wb, c="b", label="prediction model")
+plt.plot(x_train, f, c="b", label="prediction model")
 # Plot the training data points
 plt.scatter(x_train, y_train, marker="x", c="hotpink", label="actual values")
 # Plot the unknown data points

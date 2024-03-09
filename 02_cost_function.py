@@ -21,46 +21,47 @@ y_train = np.array(
 
 # Initial parameter w, b
 w_init = 100
-b_init = 50
+b_init = 0
 
-# Range for w values
-w_range = np.arange(start=0, stop=450, step=50)
+# Ranges for w, b values
+w_range = np.linspace(50, 500, 100)
+b_range = np.linspace(-100, 450, 100)
 
 
 def compute_model(x, w, b):
     """Calculates the prediction values and represents the model"""
-    m = x.shape[0]
-    f_wb = np.zeros(m)
-    for i in range(m):
-        f_wb[i] = x[i] * w + b
-    return f_wb
+    f = np.dot(x, w) + b
+    return f
 
 
-def compute_cost(x: list, y: list, w: list, b: int) -> list:
+def compute_cost(x, y, w, b):
     """Computes the cost for given parameters"""
-    m = x.shape[0]
+    m = len(x)
 
-    cost_sum = 0
+    total_cost = 0
     for i in range(m):
         f_wb = w * x[i] + b
-        cost = (f_wb - y[i]) ** 2
-        cost_sum = cost_sum + cost
-    total_cost = (1 / (2 * m)) * cost_sum
+        loss = (f_wb - y[i]) ** 2
+        total_cost = total_cost + loss
+    total_cost = (1 / (2 * m)) * total_cost
     return total_cost
 
 
-tmp_f_wb = compute_model(x_train, w_init, b_init)
+# Compute the linear regression model
+f = compute_model(x_train, w_init, b_init)
+
+# Compute the the costs
 costs = [compute_cost(x_train, y_train, w, b_init) for w in w_range]
 
-w_new = np.linspace(0, 450, 50)
-spl = make_interp_spline(w_range, costs, k=2)
-w_smoothed = spl(w_new)
+# Interpolate a smooth spline for plotting
+spline = make_interp_spline(w_range, costs, k=2)
+w_smoothed = spline(w_range)
 
-
+# Plotting the results
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 8))
 fig.subplots_adjust(left=0.25, bottom=0.25)
-(line,) = ax1.plot(x_train, tmp_f_wb)
-(para,) = ax2.plot(w_new, w_smoothed)
+(line,) = ax1.plot(x_train, f)
+(para,) = ax2.plot(w_range, w_smoothed)
 (point,) = ax2.plot(
     w_init,
     compute_cost(x_train, y_train, w_init, b_init),
@@ -68,18 +69,23 @@ fig.subplots_adjust(left=0.25, bottom=0.25)
 )
 
 ax1.scatter(x_train, y_train, marker="x", c="r", label="actual values")
-
-ax_color = "hotpink"
 ax1.set_xlabel("Size [1000 sqft]")
 ax1.set_ylabel("Price [1000 $]")
 
 
 ax_w = fig.add_axes([0.25, 0.1, 0.65, 0.03])
-w_slider = Slider(ax=ax_w, label="w", valmin=0, valmax=300, valinit=w_init)
+w_slider = Slider(
+    ax=ax_w, label="w", valmin=w_range.min(), valmax=w_range.max(), valinit=w_init
+)
 
 ax_b = fig.add_axes([0.1, 0.25, 0.0225, 0.63])
 b_slider = Slider(
-    ax=ax_b, label="b", valmin=-200, valmax=300, valinit=b_init, orientation="vertical"
+    ax=ax_b,
+    label="b",
+    valmin=b_range.min(),
+    valmax=b_range.max(),
+    valinit=b_init,
+    orientation="vertical",
 )
 
 
