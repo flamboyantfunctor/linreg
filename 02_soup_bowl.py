@@ -26,7 +26,7 @@ cost = cost_vectorized(W, B)
 # Plotting the results with matplotlib
 fig = plt.figure()
 ax = fig.add_subplot(111, projection="3d")
-surf = ax.plot_surface(W, B, cost, cmap="viridis")
+surf = ax.plot_surface(W, B, cost, cmap="magma")
 
 ax.set_xlabel("Weight")
 ax.set_ylabel("Bias")

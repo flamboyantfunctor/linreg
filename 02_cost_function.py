@@ -1,7 +1,5 @@
-import matplotlib.pyplot as plt
 import numpy as np
-from scipy.interpolate import make_interp_spline
-
+import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 
 # Training data Inputs [size]
@@ -19,13 +17,20 @@ y_train = np.array(
     ]
 )
 
-# Initial parameter w, b
-w_init = 100
-b_init = 0
+x_normalized = np.interp(x_train, (x_train.min(), x_train.max()), (-1, 1))
+y_normalized = np.interp(y_train, (y_train.min(), y_train.max()), (-1, 1))
 
+WB_MIN = -5
+WB_MAX = 5
 # Ranges for w, b values
-w_range = np.linspace(50, 500, 100)
-b_range = np.linspace(-100, 450, 100)
+w_range = np.linspace(WB_MIN, WB_MAX, 100)
+b_range = np.linspace(WB_MIN, WB_MAX, 100)
+
+# Initial parameter w, b
+w_init = -4
+b_init = -4
+
+W, B = np.meshgrid(w_range, b_range)
 
 
 def compute_model(x, w, b):
@@ -34,90 +39,96 @@ def compute_model(x, w, b):
     return f
 
 
-def compute_cost(x, y, w, b):
+def compute_cost(w, b):
     """Computes the cost for given parameters"""
-    m = len(x)
+    m = len(x_normalized)
 
     total_cost = 0
     for i in range(m):
-        f_wb = w * x[i] + b
-        loss = (f_wb - y[i]) ** 2
+        f_wb = w * x_normalized[i] + b
+        loss = (f_wb - y_normalized[i]) ** 2
         total_cost = total_cost + loss
     total_cost = (1 / (2 * m)) * total_cost
     return total_cost
 
 
-# Compute the linear regression model
-f = compute_model(x_train, w_init, b_init)
+# Compute the initial linear regression model
+f = compute_model(x_normalized, w_init, b_init)
 
 # Compute the the costs
-costs = [compute_cost(x_train, y_train, w, b_init) for w in w_range]
+costs = np.vectorize(compute_cost)(W, B)
 
-# Interpolate a smooth spline for plotting
-spline = make_interp_spline(w_range, costs, k=2)
-w_smoothed = spline(w_range)
 
-# Plotting the results
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 8))
+#### PLOTTING ####
+fig = plt.figure(figsize=(10, 7))
 fig.subplots_adjust(left=0.25, bottom=0.25)
-line = ax1.plot(x_train, f)[0]
-para = ax2.plot(w_range, w_smoothed)[0]
-point = ax2.plot(
-    w_init,
-    compute_cost(x_train, y_train, w_init, b_init),
-    marker="o",
-)[0]
+ax1 = fig.add_subplot(121)
+ax2 = fig.add_subplot(122, projection="3d")
 
-ax1.scatter(x_train, y_train, marker="x", c="r", label="actual values")
-ax1.set_xlabel("Size [1000 sqft]")
-ax1.set_ylabel("Price [1000 $]")
+# Plotting the linear model
+ax1.scatter(x_normalized, y_normalized, marker="x")
+(line,) = ax1.plot(x_normalized, compute_model(x_normalized, w_init, b_init))
+# Plotting the cost surface
+ax2.plot_surface(W, B, costs, cmap="magma", alpha=0.5)
+(point,) = ax2.plot(w_init, b_init, compute_cost(w_init, b_init), marker="o", c="b")
 
-ax2.set_xlabel("weight")
-ax2.set_ylabel("Cost")
+
+# Configure the axes
+ax1.set_xlabel("Siz norm")
+ax1.set_ylabel("Price norm")
+ax1.set_title("Linear Model Plot")
+
+ax2.set_xlabel("Weight")
+ax2.set_ylabel("Bias")
+ax2.set_zlabel("Cost")
+ax2.set_title("Cost Function Plot")
 
 
 ax_w = fig.add_axes([0.25, 0.1, 0.65, 0.03])
-w_slider = Slider(
-    ax=ax_w, label="w", valmin=w_range.min(), valmax=w_range.max(), valinit=w_init
-)
+w_slider = Slider(ax=ax_w, label="w", valmin=WB_MIN, valmax=WB_MAX, valinit=w_init)
 
 ax_b = fig.add_axes([0.1, 0.25, 0.0225, 0.63])
 b_slider = Slider(
     ax=ax_b,
     label="b",
-    valmin=b_range.min(),
-    valmax=b_range.max(),
+    valmin=WB_MIN,
+    valmax=WB_MAX,
     valinit=b_init,
     orientation="vertical",
 )
 
+# Create and place a reset button
+resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
+button = Button(resetax, "Reset")
 
-# Define an update function
+
+# Define an update function for the sliders on-changed event
 def update(val):
-    line.set_data(x_train, compute_model(x_train, w_slider.val, b_slider.val))
-    point.set_data(
-        [w_slider.val], [compute_cost(x_train, y_train, w_slider.val, b_init)]
+    """Updates the y values according to the w and b slider values"""
+    line.set_data(
+        [x_normalized], [compute_model(x_normalized, w_slider.val, b_slider.val)]
     )
+    point.set_data(
+        [w_slider.val],
+        [b_slider.val],
+    )
+    point.set_3d_properties([compute_cost(w_slider.val, b_slider.val)])
+
     fig.canvas.draw_idle()
 
 
-# Connect the update function to sliders change events
-w_slider.on_changed(update)
-b_slider.on_changed(update)
-
-# Create and place a reset button
-resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
-button = Button(resetax, "Reset", hovercolor="hotpink")
-
-
-# Define a reset event
+# Define a reset function for the buttons on-clicked event
 def reset(event):
+    """Resets the slider values to the initial values of w and b"""
     w_slider.reset()
     b_slider.reset()
 
 
-# Listen to click events on the button
+# Connect the update function to sliders on-changed events
+w_slider.on_changed(update)
+b_slider.on_changed(update)
+
+# Connect the onclick event of the reset button to reset function
 button.on_clicked(reset)
 
-# Show the figure
 plt.show()
