@@ -14,8 +14,6 @@ B_MIN = -20.0
 B_MAX = 20.0
 B_INIT = 0.0
 
-COLOR = "forestgreen"
-
 
 # Define the sigmoid function for logistic regression
 def sigmoid(x: np.ndarray, w: float, b: float) -> np.ndarray:
@@ -33,19 +31,16 @@ fig.subplots_adjust(left=0.25, bottom=0.25)
 
 # .plot() returns a list of created 2D Objects (Lines,, Points, etc)
 # so get the first element with [0]
-line = ax.plot(x, y, c=COLOR)[0]
+line = ax.plot(x, y)[0]
 
 # Create two sliders for the w and b parameter
 ax_w = fig.add_axes([0.25, 0.1, 0.65, 0.03])
-w_slider = Slider(
-    ax=ax_w, label="w", color=COLOR, valmin=W_MIN, valmax=W_MAX, valinit=W_INIT
-)
+w_slider = Slider(ax=ax_w, label="w", valmin=W_MIN, valmax=W_MAX, valinit=W_INIT)
 
 ax_b = fig.add_axes([0.1, 0.25, 0.0225, 0.63])
 b_slider = Slider(
     ax=ax_b,
     label="b",
-    color=COLOR,
     valmin=B_MIN,
     valmax=B_MAX,
     valinit=B_INIT,
@@ -54,7 +49,7 @@ b_slider = Slider(
 
 # Create and place a reset button
 resetax = fig.add_axes([0.8, 0.025, 0.1, 0.04])
-button = Button(resetax, "Reset", hovercolor=COLOR)
+button = Button(resetax, "Reset")
 
 
 # Define an update function for the sliders on-changed event
