@@ -17,3 +17,4 @@
 - Creating plots with matplotlib (scatter, lines, etc.)
 - Normalizing of inputs and outputs
 
+![gradient-descent in action](https://github.com/flamboyantfunctor/ml_specialization/blob/main/c1/gradientdescent.gif)
