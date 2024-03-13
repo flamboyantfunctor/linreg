@@ -9,6 +9,7 @@ matplotlib = "*"
 scipy = "*"
 scikit-learn = "*"
 pooch = "*"
+ffmpeg = "*"
 
 [dev-packages]
 

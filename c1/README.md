@@ -16,3 +16,4 @@
 - Dot Product of vectors and matrices
 - Creating plots with matplotlib (scatter, lines, etc.)
 - Normalizing of inputs and outputs
+

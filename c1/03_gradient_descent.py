@@ -36,8 +36,8 @@ w_range = np.linspace(WB_MIN, WB_MAX, 100)
 b_range = np.linspace(WB_MIN, WB_MAX, 100)
 
 # Initial parameter w, b
-w_init = -4
-b_init = -2
+w_init = -1.5
+b_init = 4
 
 W, B = np.meshgrid(w_range, b_range)
 
@@ -100,6 +100,7 @@ ax1.scatter(x_normalized, y_normalized, marker="x")
 (line,) = ax1.plot(x_normalized, compute_model(x_normalized, w_init, b_init))
 # Plotting the cost surface
 ax2.plot_surface(W, B, costs, cmap="magma", alpha=0.5)
+ax2.view_init(elev=45.0, azim=-30.0)
 (point,) = ax2.plot(w_init, b_init, compute_cost(w_init, b_init), marker="o", c="b")
 
 
@@ -169,7 +170,7 @@ def optimize_wb(frame):
     b_slider.set_val(new_b)
 
 
-animation = FuncAnimation(fig, optimize_wb, frames=100, interval=50, repeat=True)
+animation = FuncAnimation(fig, optimize_wb, frames=200, interval=50, repeat=True)
 
 
 def toggle_learning(event):
@@ -190,5 +191,8 @@ b_slider.on_changed(update)
 # Connect the onclick event of the reset button to reset function
 reset_button.on_clicked(reset)
 learning_button.on_clicked(toggle_learning)
+
+
+animation.save(filename="./c1/gradientdescent.gif", writer="pillow")
 
 plt.show()
