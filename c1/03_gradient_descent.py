@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 from matplotlib.animation import FuncAnimation
 
-# CONSTANTS
+# Constants
 WB_MIN = -5
 WB_MAX = 5
-ITERATIONS = 100
 LEARNING_RATE = 0.05
 
+# Variables
 animationIsOn = True
 
 
@@ -48,8 +48,8 @@ def compute_model(x, w, b):
     return f
 
 
-def compute_cost(w, b):
-    """Computes the cost for given parameters"""
+def compute_cost(w: float, b: float) -> float:
+    """Computes the cost for given parameters w, b"""
     m = len(x_normalized)
 
     total_cost = 0
@@ -61,7 +61,8 @@ def compute_cost(w, b):
     return total_cost
 
 
-def update_w_b(w, b, lr):
+def update_w_b(w: float, b: float, lr: float) -> tuple:
+    """Updates the values w and b with the gradient descent algorithm"""
 
     m = len(x_normalized)
 
@@ -157,7 +158,7 @@ def reset(event):
     b_slider.reset()
 
 
-def learn(frame):
+def optimize_wb(frame):
 
     current_w = w_slider.val
     current_b = b_slider.val
@@ -168,7 +169,7 @@ def learn(frame):
     b_slider.set_val(new_b)
 
 
-animation = FuncAnimation(fig, learn, frames=100, interval=50, repeat=True)
+animation = FuncAnimation(fig, optimize_wb, frames=100, interval=50, repeat=True)
 
 
 def toggle_learning(event):
