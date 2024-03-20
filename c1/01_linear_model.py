@@ -13,7 +13,7 @@ b = 100
 
 
 # Model
-def compute_model(x: np.ndarray, w: np.ndarray, b: float) -> np.ndarray:
+def compute_model(x: np.ndarray, w: float, b: float) -> np.ndarray:
     """Computes the prediction of a linear model"""
     f = np.dot(x, w) + b
     return f

@@ -60,7 +60,7 @@ costs = np.vectorize(compute_cost)(W, B)
 
 
 #### PLOTTING ####
-fig = plt.figure(figsize=(10, 7))
+fig = plt.figure(figsize=(12, 8))
 fig.subplots_adjust(left=0.25, bottom=0.25)
 ax1 = fig.add_subplot(121)
 ax2 = fig.add_subplot(122, projection="3d")

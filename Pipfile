@@ -10,6 +10,7 @@ scipy = "*"
 scikit-learn = "*"
 pooch = "*"
 ffmpeg = "*"
+pandas = "*"
 
 [dev-packages]
 

@@ -6,26 +6,17 @@ from matplotlib.animation import FuncAnimation
 # Constants
 WB_MIN = -5
 WB_MAX = 5
-LEARNING_RATE = 0.05
+LEARNING_RATE = 0.03
 
 # Variables
 animationIsOn = True
 
 
-# Training data Inputs [size]
-x_train = np.array([1.0, 1.7, 2.0, 2.5, 3.0, 3.2])
+# Training data Inputs: Sizes of houses
+x_train = np.array([1.0, 1.7, 2.0, 2.5, 3.0, 3.2, 3.5])
 
-# Training data Labels [price]
-y_train = np.array(
-    [
-        250,
-        300,
-        480,
-        430,
-        630,
-        730,
-    ]
-)
+# Training data Labels: Prices of houses
+y_train = np.array([250, 300, 480, 430, 630, 730, 750])
 
 x_normalized = np.interp(x_train, (x_train.min(), x_train.max()), (-1, 1))
 y_normalized = np.interp(y_train, (y_train.min(), y_train.max()), (-1, 1))
@@ -90,7 +81,7 @@ costs = np.vectorize(compute_cost)(W, B)
 
 
 #### PLOTTING ####
-fig = plt.figure(figsize=(10, 7))
+fig = plt.figure(figsize=(12, 8))
 fig.subplots_adjust(left=0.25, bottom=0.25)
 ax1 = fig.add_subplot(121)
 ax2 = fig.add_subplot(122, projection="3d")
@@ -170,7 +161,7 @@ def optimize_wb(frame):
     b_slider.set_val(new_b)
 
 
-animation = FuncAnimation(fig, optimize_wb, frames=200, interval=50, repeat=True)
+animation = FuncAnimation(fig, optimize_wb, frames=100, interval=50, repeat=True)
 
 
 def toggle_learning(event):
@@ -193,6 +184,6 @@ reset_button.on_clicked(reset)
 learning_button.on_clicked(toggle_learning)
 
 
-animation.save(filename="./c1/gradientdescent.gif", writer="pillow")
+# animation.save(filename="./c1/dump/gradientdescent.gif", writer="pillow")
 
 plt.show()
