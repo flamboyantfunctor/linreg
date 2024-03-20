@@ -3,20 +3,21 @@ import copy
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button, RadioButtons
 
+
 x = np.arange(-1, 1, 0.1)
 
 # Ominous Target Function - In reality we'll never know this function
-y = 2 - 2 * (x**3)
+y = 2 - 1 * (x**3) - 0.5 * (x**2) + 1 * (x**1)
 
 # Create input data that has 3 polynomial features:
 # np.c_ is a function that concatenates the specified values
 X = np.c_[x**1, x**2, x**3]
 
 # Assign some random weights.. We need 3 weights because we have 3 features
-w_init = np.array([2, -0.8, 0.5])
+w_init = np.array([0.36, 0.84, -0.73])
 
 # Assign a random bias value
-b_init = 1
+b_init = 0
 
 
 def compute_cost(X, y, w, b):
@@ -48,10 +49,11 @@ def update_wb(X, y, w, b, alpha):
 
 def start_fitting(event):
     w = np.array([w1_slider.val, w2_slider.val, w3_slider.val])
-    b, iterations = b_slider.val, iter_slider.val
+    b = b_slider.val
+    iters = iter_slider.val
     alpha = float(alpha_btns.value_selected)
 
-    opt_w, opt_b = fit(X, y, w, b, iterations, alpha)
+    opt_w, opt_b = fit(X, y, w, b, iters, alpha)
 
     w1_slider.set_val(opt_w[0])
     w2_slider.set_val(opt_w[1])
@@ -85,8 +87,8 @@ ax_w1 = fig.add_axes([0.05, 0.15, 0.01, 0.63])
 w1_slider = Slider(
     ax=ax_w1,
     label="w1",
-    valmin=-5,
-    valmax=5,
+    valmin=-1,
+    valmax=1,
     valinit=w_init[0],
     orientation="vertical",
 )
@@ -95,8 +97,8 @@ ax_w2 = fig.add_axes([0.1, 0.15, 0.01, 0.63])
 w2_slider = Slider(
     ax=ax_w2,
     label="w2",
-    valmin=-5,
-    valmax=5,
+    valmin=-1,
+    valmax=1,
     valinit=w_init[1],
     orientation="vertical",
 )
@@ -105,8 +107,8 @@ ax_w3 = fig.add_axes([0.15, 0.15, 0.01, 0.63])
 w3_slider = Slider(
     ax=ax_w3,
     label="w3",
-    valmin=-5,
-    valmax=5,
+    valmin=-1,
+    valmax=1,
     valinit=w_init[2],
     orientation="vertical",
 )
@@ -115,8 +117,8 @@ ax_b = fig.add_axes([0.2, 0.15, 0.01, 0.63])
 b_slider = Slider(
     ax=ax_b,
     label="b",
-    valmin=-5,
-    valmax=5,
+    valmin=-3,
+    valmax=3,
     valinit=b_init,
     orientation="vertical",
 )
@@ -133,7 +135,7 @@ iter_slider = Slider(
 )
 
 ax_alpha = fig.add_axes([0.30, 0.15, 0.05, 0.2])
-alpha_btns = RadioButtons(ax=ax_alpha, labels=["0.1", "0.01", "0.001"])
+alpha_btns = RadioButtons(ax=ax_alpha, labels=["0.1", "0.01", "0.001"], active=1)
 
 
 def update(event):
@@ -148,6 +150,7 @@ def reset(event):
     w2_slider.reset()
     w3_slider.reset()
     b_slider.reset()
+    iter_slider.reset()
 
 
 fitax = fig.add_axes([0.4, 0.025, 0.2, 0.04])
