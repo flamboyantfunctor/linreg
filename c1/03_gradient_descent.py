@@ -96,7 +96,7 @@ ax2.view_init(elev=45.0, azim=-30.0)
 
 
 # Configure the axes
-ax1.set_xlabel("Siz norm")
+ax1.set_xlabel("Size norm")
 ax1.set_ylabel("Price norm")
 ax1.set_title("Linear Model Plot")
 
