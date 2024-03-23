@@ -1,3 +1,7 @@
+
+# %% [markdown]
+# # A Basic Linear Regression example
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -40,3 +44,5 @@ plt.ylabel(f"Price in $10^3$ dollars")
 plt.xlabel(f"Size in $10^3$ sqft")
 plt.legend()
 plt.show()
+
+# %%

@@ -9,7 +9,7 @@ anim = None
 x = np.arange(-1, 1, 0.1)
 
 # Ominous Target Function - In reality we'll never know this function
-y = 2 - 1 * (x**3) - 0.5 * (x**2) + 1 * (x**1)
+y = 1 * (x**1) - 0.5 * (x**2) - 1 * (x**3) + 2
 y_str = r"$f(x) = x - 0.5x^2 - x^3 + 2$"
 
 # Create input data that has 3 polynomial features:
@@ -129,7 +129,7 @@ alpha_btns = RadioButtons(ax=ax_alpha, labels=["0.1", "0.01", "0.001"], active=1
 
 def start_animation(event):
     global anim
-    anim = FuncAnimation(fig, fit, frames=10000, interval=1, repeat=False)
+    anim = FuncAnimation(fig, fit, frames=10000, interval=10, repeat=False)
 
 
 def update(event):

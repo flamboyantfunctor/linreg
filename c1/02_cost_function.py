@@ -1,3 +1,4 @@
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
@@ -132,3 +133,5 @@ b_slider.on_changed(update)
 button.on_clicked(reset)
 
 plt.show()
+
+# %%
