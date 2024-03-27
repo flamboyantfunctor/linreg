@@ -1,4 +1,3 @@
-
 # %% [markdown]
 # # A Basic Linear Regression example
 

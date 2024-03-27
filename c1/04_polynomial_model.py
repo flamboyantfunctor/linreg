@@ -112,16 +112,6 @@ b_slider = Slider(
     orientation="vertical",
 )
 
-# ax_iter = fig.add_axes([0.25, 0.15, 0.01, 0.63])
-# iter_slider = Slider(
-#     ax=ax_iter,
-#     label="iterations",
-#     valmin=1000,
-#     valmax=10000,
-#     valinit=5000,
-#     valstep=1000,
-#     orientation="vertical",
-# )
 
 ax_alpha = fig.add_axes([0.30, 0.15, 0.05, 0.2])
 alpha_btns = RadioButtons(ax=ax_alpha, labels=["0.1", "0.01", "0.001"], active=1)
@@ -129,7 +119,7 @@ alpha_btns = RadioButtons(ax=ax_alpha, labels=["0.1", "0.01", "0.001"], active=1
 
 def start_animation(event):
     global anim
-    anim = FuncAnimation(fig, fit, frames=10000, interval=10, repeat=False)
+    anim = FuncAnimation(fig, fit, frames=10000, interval=50, repeat=False)
 
 
 def update(event):
@@ -144,7 +134,6 @@ def reset(event):
     w2_slider.reset()
     w3_slider.reset()
     b_slider.reset()
-    # iter_slider.reset()
 
 
 animateax = fig.add_axes([0.4, 0.025, 0.2, 0.04])
