@@ -12,6 +12,7 @@ pooch = "*"
 ffmpeg = "*"
 pandas = "*"
 tensorflow = "*"
+torch = "*"
 
 [dev-packages]
 ipykernel = "*"
